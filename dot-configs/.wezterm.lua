@@ -5,7 +5,7 @@ local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 config.font = wezterm.font 'JetBrains Mono'
-config.font_size = 16.0
+config.font_size = 12.0
 config.enable_scroll_bar = true
 
 return config

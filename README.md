@@ -1,2 +1,3 @@
 # nix-os-cfg
-Nixos Configuration
+
+NixOS Configuration

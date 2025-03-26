@@ -3,7 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-# let unstable = import <unstable-nix> { };
+let
+  unstable-nix = import <unstable-nix> { config.allowUnfree = true; };
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -51,24 +53,26 @@
 
   hardware.graphics.enable = true;
 
-  # # vulkan
-  # hardware.graphics.extraPackages = [
-  #   pkgs.amdvlk
-  #   # To enable Vulkan support for 32-bit applications
-  #   pkgs.driversi686Linux.amdvlk
-  # ];
-  # # Force radv
-  # environment.variables.AMD_VULKAN_ICD = "RADV";
+  # vulkan
+  hardware.graphics.extraPackages = [
+    pkgs.amdvlk
+    # To enable Vulkan support for 32-bit applications
+    pkgs.driversi686Linux.amdvlk
+  ];
+  # Force radv
+  environment.variables.AMD_VULKAN_ICD = "RADV";
 
   # enable firmware update daemon
   services.fwupd.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.games.enable = false;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -107,7 +111,9 @@
       "wheel"
     ];
     packages = with pkgs; [
-      pkgs.vscode
+      # unstable pkgs aka bleeding edge
+      unstable-nix.google-chrome
+      unstable-nix.vscode
     ];
   };
 
@@ -120,12 +126,15 @@
     git
     git-lfs
     tree
-    pkgs.nixfmt-rfc-style
-    pkgs.wezterm
-    pkgs.google-chrome
-    pkgs.pciutils
-    pkgs.lshw
-    pkgs.nix-ld
+    bat
+    nixfmt-rfc-style
+    wezterm
+    pciutils
+    lshw
+    nix-ld
+    mesa
+    vulkan-tools
+    # unstable pkgs aka bleeding edge
   ];
 
   # Install firefox.
@@ -162,5 +171,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
-
 }
