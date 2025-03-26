@@ -3,15 +3,21 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+# let unstable = import <unstable-nix> { };
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
+  # kernel config
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    # fix hangs with PSR
+    "amdgpu.dcdebugmask=0x600"
+  ];
+
   # Bootloader.
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -43,6 +49,18 @@
     LC_TIME = "en_NZ.UTF-8";
   };
 
+  hardware.graphics.enable = true;
+
+  # # vulkan
+  # hardware.graphics.extraPackages = [
+  #   pkgs.amdvlk
+  #   # To enable Vulkan support for 32-bit applications
+  #   pkgs.driversi686Linux.amdvlk
+  # ];
+  # # Force radv
+  # environment.variables.AMD_VULKAN_ICD = "RADV";
+
+  # enable firmware update daemon
   services.fwupd.enable = true;
 
   # Enable the X11 windowing system.
@@ -89,15 +107,9 @@
       "wheel"
     ];
     packages = with pkgs; [
-      vscode
+      pkgs.vscode
     ];
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -108,9 +120,21 @@
     git
     git-lfs
     tree
-    nixfmt-rfc-style
-    wezterm
+    pkgs.nixfmt-rfc-style
+    pkgs.wezterm
+    pkgs.google-chrome
+    pkgs.pciutils
+    pkgs.lshw
+    pkgs.nix-ld
   ];
+
+  # Install firefox.
+  programs.firefox.enable = true;
+
+  programs.nix-ld.enable = true;
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
