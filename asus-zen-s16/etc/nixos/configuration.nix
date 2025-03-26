@@ -12,8 +12,8 @@ in
     ./hardware-configuration.nix
   ];
 
-  # kernel config
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # aka 6.14
+  boot.kernelPackages = pkgs.linuxPackages_testing;
   boot.kernelParams = [
     # fix hangs with PSR
     "amdgpu.dcdebugmask=0x600"
@@ -66,11 +66,12 @@ in
   services.fwupd.enable = true;
 
   # Enable the X11 windowing system.
+  services.xserver.autorun = true;
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.wayland = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.gnome.games.enable = false;
 
@@ -90,7 +91,47 @@ in
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
+
     pulse.enable = true;
+
+    # try fix sub-wuffer
+    # from "https://github.com/BNieuwenhuizen/zenbook-s16"
+
+    extraConfig.pipewire-pulse = {
+      "99-speaker-routing" = {
+        "context.modules" = [
+          {
+            "name" = "libpipewire-module-loopback";
+            "args" = {
+              "node.description" = "Stereo to 4.0 upmix";
+              "audio.position" = [
+                "FL"
+                "FR"
+              ];
+              "capture.props" = {
+                "node.name" = "sink.upmix_4_0";
+                "media.class" = "Audio/Sink";
+              };
+              "playback.props" = {
+                "node.name" = "playback.upmix-4.0";
+                "audio.position" = [
+                  "FL"
+                  "FR"
+                  "RL"
+                  "RR"
+                ];
+                "target.object" = "alsa_output.pci-0000_c4_00.6.analog-surround-40";
+                "stream.dont-remix" = true;
+                "node.passive" = true;
+                "channelmix.upmix" = true;
+                "channelmix.upmix-method" = "simple";
+              };
+            };
+          }
+        ];
+      };
+    };
+
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
@@ -100,7 +141,7 @@ in
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sagar = {
@@ -134,6 +175,8 @@ in
     nix-ld
     mesa
     vulkan-tools
+    pulseaudioFull
+    pavucontrol
     # unstable pkgs aka bleeding edge
   ];
 
@@ -156,7 +199,7 @@ in
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
