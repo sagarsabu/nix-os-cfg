@@ -11,6 +11,7 @@
   ];
 
   # Bootloader.
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -41,6 +42,8 @@
     LC_TELEPHONE = "en_NZ.UTF-8";
     LC_TIME = "en_NZ.UTF-8";
   };
+
+  services.fwupd.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -106,6 +109,7 @@
     git-lfs
     tree
     nixfmt-rfc-style
+    wezterm
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
