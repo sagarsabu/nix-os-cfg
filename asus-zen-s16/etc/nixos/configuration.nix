@@ -23,7 +23,7 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "sagar-zen16-laptop"; # Define your hostname.
+  networking.hostName = "sagar-zen-s16-laptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -150,11 +150,10 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     packages = with pkgs; [
-      # unstable pkgs aka bleeding edge
-      unstable-nix.google-chrome
-      unstable-nix.vscode
+
     ];
   };
 
@@ -163,9 +162,6 @@ in
   environment.systemPackages = with pkgs; [
     wget
     curl
-    neovim
-    git
-    git-lfs
     tree
     bat
     nixfmt-rfc-style
@@ -177,13 +173,34 @@ in
     vulkan-tools
     pulseaudioFull
     pavucontrol
+    pkgs.docker
     # unstable pkgs aka bleeding edge
+    unstable-nix.vscode
+    unstable-nix.google-chrome
   ];
 
-  # Install firefox.
-  programs.firefox.enable = true;
+  # docker
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless.enable = true;
+  virtualisation.docker.rootless.setSocketVariable = true;
 
+  # globally configured programs
+  programs.firefox.enable = true;
   programs.nix-ld.enable = true;
+  programs.git.enable = true;
+  programs.git.lfs.enable = true;
+
+  # neovim stuff
+  programs.neovim.enable = true;
+  programs.neovim.defaultEditor = true;
+  programs.neovim.vimAlias = true;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
