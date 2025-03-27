@@ -53,33 +53,35 @@ in
 
   hardware.graphics.enable = true;
 
-  # vulkan
-  hardware.graphics.extraPackages = [
-    pkgs.amdvlk
-    # To enable Vulkan support for 32-bit applications
-    pkgs.driversi686Linux.amdvlk
-  ];
-  # Force radv
-  environment.variables.AMD_VULKAN_ICD = "RADV";
+  # # vulkan
+  # hardware.graphics.extraPackages = [
+  #   pkgs.amdvlk
+  #   # To enable Vulkan support for 32-bit applications
+  #   pkgs.driversi686Linux.amdvlk
+  # ];
+  # # Force radv
+  # environment.variables.AMD_VULKAN_ICD = "RADV";
 
   # enable firmware update daemon
   services.fwupd.enable = true;
 
   # Enable the X11 windowing system.
-  services.xserver.autorun = true;
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.gnome.games.enable = false;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "nz";
-    variant = "";
+  services.xserver = {
+    autorun = true;
+    enable = true;
+    videoDrivers = [ "amdgpu" ];
+    # Enable the GNOME Desktop Environment.
+    displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = true;
+    desktopManager.gnome.enable = true;
+    # Configure keymap in X11
+    xkb = {
+      layout = "nz";
+      variant = "";
+    };
   };
+
+  services.gnome.games.enable = false;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -141,7 +143,7 @@ in
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
+  # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sagar = {
@@ -152,9 +154,7 @@ in
       "wheel"
       "docker"
     ];
-    packages = with pkgs; [
-
-    ];
+    packages = with pkgs; [ ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -173,27 +173,40 @@ in
     vulkan-tools
     pulseaudioFull
     pavucontrol
-    pkgs.docker
+    docker
     # unstable pkgs aka bleeding edge
     unstable-nix.vscode
     unstable-nix.google-chrome
   ];
 
   # docker
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless.enable = true;
-  virtualisation.docker.rootless.setSocketVariable = true;
+  virtualisation.docker = {
+    enable = true;
+    rootless.enable = true;
+    rootless.setSocketVariable = true;
+  };
 
   # globally configured programs
   programs.firefox.enable = true;
   programs.nix-ld.enable = true;
   programs.git.enable = true;
   programs.git.lfs.enable = true;
+  # programs.xwayland.enable = true;
 
-  # neovim stuff
-  programs.neovim.enable = true;
-  programs.neovim.defaultEditor = true;
-  programs.neovim.vimAlias = true;
+  # htop
+  programs.htop = {
+    enable = true;
+    settings = {
+      hide_kernel_threads = true;
+    };
+  };
+
+  # neovim
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    vimAlias = true;
+  };
 
   programs.steam = {
     enable = true;
