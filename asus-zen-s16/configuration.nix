@@ -10,10 +10,12 @@
 }:
 {
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   imports = [
     # Include the results of the hardware scan.
@@ -21,6 +23,7 @@
     ./audio.nix
     ./security.nix
     ./il18.nix
+    ./global-programs.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -97,12 +100,11 @@
       "docker"
     ];
     packages = with pkgs; [
-      slack
     ];
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit inputs pkgs; };
     users = {
       sagar = import ./home.nix;
     };
@@ -126,9 +128,6 @@
     pavucontrol
     docker
     nvtopPackages.amd
-    # unstable pkgs aka bleeding edge
-    pkgs.unstable.vscode
-    pkgs.unstable.google-chrome
   ];
 
   # docker
@@ -141,35 +140,6 @@
   environment.interactiveShellInit = ''
     alias grep='grep --colour=auto'
   '';
-
-  # globally configured programs
-  programs.firefox.enable = true;
-  programs.xwayland.enable = true;
-  programs.nix-ld.enable = true;
-  programs.git.enable = true;
-  programs.git.lfs.enable = true;
-
-  # htop
-  programs.htop = {
-    enable = true;
-    settings = {
-      hide_kernel_threads = true;
-    };
-  };
-
-  # neovim
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
-  };
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-  };
 
   # systemd
   systemd = {
