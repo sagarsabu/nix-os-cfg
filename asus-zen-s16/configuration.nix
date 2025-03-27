@@ -8,14 +8,18 @@
   ...
 }:
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+  ];
+
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./audio.nix
+    ./security.nix
   ];
 
   # aka 6.14
@@ -44,7 +48,6 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_NZ.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_NZ.UTF-8";
     LC_IDENTIFICATION = "en_NZ.UTF-8";
@@ -92,62 +95,6 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-
-    pulse.enable = true;
-
-    # try fix sub-wuffer
-    # from "https://github.com/BNieuwenhuizen/zenbook-s16"
-
-    extraConfig.pipewire-pulse = {
-      "99-speaker-routing" = {
-        "context.modules" = [
-          {
-            "name" = "libpipewire-module-loopback";
-            "args" = {
-              "node.description" = "Stereo to 4.0 upmix";
-              "audio.position" = [
-                "FL"
-                "FR"
-              ];
-              "capture.props" = {
-                "node.name" = "sink.upmix_4_0";
-                "media.class" = "Audio/Sink";
-              };
-              "playback.props" = {
-                "node.name" = "playback.upmix-4.0";
-                "audio.position" = [
-                  "FL"
-                  "FR"
-                  "RL"
-                  "RR"
-                ];
-                "target.object" = "alsa_output.pci-0000_c4_00.6.analog-surround-40";
-                "stream.dont-remix" = true;
-                "node.passive" = true;
-                "channelmix.upmix" = true;
-                "channelmix.upmix-method" = "simple";
-              };
-            };
-          }
-        ];
-      };
-    };
-
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
@@ -229,38 +176,9 @@
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # systemd
   systemd = {
     tpm2.enable = true;
-  };
-
-  # security
-  security = {
-
-    # tpm2
-    tpm2 = {
-      enable = true;
-      applyUdevRules = true;
-      pkcs11.enable = true;
-      abrmd.enable = true;
-    };
-
-    # passwordless root access
-    sudo.extraRules = [
-      {
-        users = [ "sagar" ];
-        commands = [
-          {
-            command = "ALL";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
-
   };
 
   # Some programs need SUID wrappers, can be configured further or are
