@@ -3,12 +3,12 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
+  inputs,
   config,
   pkgs,
   ...
 }:
 {
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
     "nix-command"
@@ -20,6 +20,8 @@
     ./hardware-configuration.nix
     ./audio.nix
     ./security.nix
+    ./il18.nix
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   # aka 6.14
@@ -45,20 +47,6 @@
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_NZ.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_NZ.UTF-8";
-    LC_IDENTIFICATION = "en_NZ.UTF-8";
-    LC_MEASUREMENT = "en_NZ.UTF-8";
-    LC_MONETARY = "en_NZ.UTF-8";
-    LC_NAME = "en_NZ.UTF-8";
-    LC_NUMERIC = "en_NZ.UTF-8";
-    LC_PAPER = "en_NZ.UTF-8";
-    LC_TELEPHONE = "en_NZ.UTF-8";
-    LC_TIME = "en_NZ.UTF-8";
-  };
 
   hardware.graphics = {
     enable = true;
@@ -113,6 +101,13 @@
     ];
   };
 
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      sagar = import ./home.nix;
+    };
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -149,10 +144,10 @@
 
   # globally configured programs
   programs.firefox.enable = true;
+  programs.xwayland.enable = true;
   programs.nix-ld.enable = true;
   programs.git.enable = true;
   programs.git.lfs.enable = true;
-  programs.xwayland.enable = true;
 
   # htop
   programs.htop = {
