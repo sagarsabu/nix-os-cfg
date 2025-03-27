@@ -2,14 +2,20 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-let
-  unstable-nix = import <unstable-nix> { config.allowUnfree = true; };
-in
+{
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+  ];
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
   ];
 
   # aka 6.14
@@ -155,7 +161,9 @@ in
       "wheel"
       "docker"
     ];
-    packages = with pkgs; [ ];
+    packages = with pkgs; [
+      slack
+    ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -177,8 +185,8 @@ in
     docker
     nvtopPackages.amd
     # unstable pkgs aka bleeding edge
-    unstable-nix.vscode
-    unstable-nix.google-chrome
+    pkgs.unstable.vscode
+    pkgs.unstable.google-chrome
   ];
 
   # docker
@@ -188,12 +196,16 @@ in
     rootless.setSocketVariable = true;
   };
 
+  environment.interactiveShellInit = ''
+    alias grep='grep --colour=auto'
+  '';
+
   # globally configured programs
   programs.firefox.enable = true;
   programs.nix-ld.enable = true;
   programs.git.enable = true;
   programs.git.lfs.enable = true;
-  # programs.xwayland.enable = true;
+  programs.xwayland.enable = true;
 
   # htop
   programs.htop = {
