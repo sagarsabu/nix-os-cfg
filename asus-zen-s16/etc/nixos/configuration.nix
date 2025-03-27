@@ -51,16 +51,17 @@ in
     LC_TIME = "en_NZ.UTF-8";
   };
 
-  hardware.graphics.enable = true;
-
-  # # vulkan
-  # hardware.graphics.extraPackages = [
-  #   pkgs.amdvlk
-  #   # To enable Vulkan support for 32-bit applications
-  #   pkgs.driversi686Linux.amdvlk
-  # ];
-  # # Force radv
-  # environment.variables.AMD_VULKAN_ICD = "RADV";
+  hardware.graphics = {
+    enable = true;
+    # vulkan
+    extraPackages = [
+      pkgs.amdvlk
+      # To enable Vulkan support for 32-bit applications
+      pkgs.driversi686Linux.amdvlk
+    ];
+  };
+  # Force radv
+  environment.variables.AMD_VULKAN_ICD = "RADV";
 
   # enable firmware update daemon
   services.fwupd.enable = true;
@@ -174,6 +175,7 @@ in
     pulseaudioFull
     pavucontrol
     docker
+    nvtopPackages.amd
     # unstable pkgs aka bleeding edge
     unstable-nix.vscode
     unstable-nix.google-chrome
@@ -217,6 +219,37 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # systemd
+  systemd = {
+    tpm2.enable = true;
+  };
+
+  # security
+  security = {
+
+    # tpm2
+    tpm2 = {
+      enable = true;
+      applyUdevRules = true;
+      pkcs11.enable = true;
+      abrmd.enable = true;
+    };
+
+    # passwordless root access
+    sudo.extraRules = [
+      {
+        users = [ "sagar" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
