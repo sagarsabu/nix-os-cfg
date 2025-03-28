@@ -38,9 +38,15 @@
 
   # Bootloader.
   boot.loader = {
-    systemd-boot.enable = true;
+    systemd-boot.enable = false;
     efi.canTouchEfiVariables = true;
-    grub.fontSize = 20;
+    grub = {
+      enable = true;
+      device = "nodev";
+      useOSProber = true;
+      efiSupport = true;
+      fontSize = 20;
+    };
   };
 
   distro-grub-themes = {
@@ -86,9 +92,6 @@
   services.xserver = {
     enable = true;
     videoDrivers = [ "amdgpu" ];
-    deviceSection = ''
-      Option "DRI" "3"
-    '';
     # Option "TearFree" "true"
     # Enable the GNOME Desktop Environment.
     displayManager.gdm = {
