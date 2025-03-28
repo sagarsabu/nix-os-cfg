@@ -139,12 +139,13 @@
       "wheel"
       "docker"
     ];
-    packages = with pkgs; [
+    packages = [
     ];
   };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs pkgs; };
+    backupFileExtension = "backup";
     users = {
       sagar = import ./home.nix;
     };
@@ -170,12 +171,14 @@
       pavucontrol
       docker
       nvtopPackages.amd
+      home-manager
       gnome-tweaks
       gnome-firmware
       gnome-shell-extensions
     ]
     ++ (with pkgs.gnomeExtensions; [
       systemd-status
+      dock-from-dash
     ]);
 
   # docker
