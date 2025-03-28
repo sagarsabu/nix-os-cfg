@@ -6,6 +6,7 @@
   inputs,
   config,
   pkgs,
+  system,
   ...
 }:
 {
@@ -25,6 +26,7 @@
     ./il18.nix
     ./global-programs.nix
     inputs.home-manager.nixosModules.home-manager
+    inputs.distro-grub-themes.nixosModules.${system}.default
   ];
 
   # aka 6.14
@@ -35,8 +37,16 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    grub.fontSize = 20;
+  };
+
+  distro-grub-themes = {
+    enable = true;
+    theme = "nixos";
+  };
 
   networking.hostName = "sagar-zen-s16-laptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -46,7 +56,13 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    wifi = {
+      powersave = false;
+      backend = "iwd";
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
@@ -68,13 +84,20 @@
 
   # Enable the X11 windowing system.
   services.xserver = {
-    autorun = true;
     enable = true;
     videoDrivers = [ "amdgpu" ];
+    deviceSection = ''
+      Option "DRI" "3"
+    '';
+    # Option "TearFree" "true"
     # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;
-    desktopManager.gnome.enable = true;
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
+    desktopManager.gnome = {
+      enable = true;
+    };
     # Configure keymap in X11
     xkb = {
       layout = "nz";
@@ -112,23 +135,31 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    wget
-    curl
-    tree
-    bat
-    nixfmt-rfc-style
-    wezterm
-    pciutils
-    lshw
-    nix-ld
-    mesa
-    vulkan-tools
-    pulseaudioFull
-    pavucontrol
-    docker
-    nvtopPackages.amd
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      wget
+      curl
+      tree
+      bat
+      nixfmt-rfc-style
+      wezterm
+      pciutils
+      lshw
+      nix-ld
+      mesa
+      vulkan-tools
+      pulseaudioFull
+      pavucontrol
+      docker
+      nvtopPackages.amd
+      gnome-tweaks
+      gnome-firmware
+      gnome-shell-extensions
+    ]
+    ++ (with pkgs.gnomeExtensions; [
+      systemd-status
+    ]);
 
   # docker
   virtualisation.docker = {
@@ -140,6 +171,9 @@
   environment.interactiveShellInit = ''
     alias grep='grep --colour=auto'
   '';
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
 
   # systemd
   systemd = {

@@ -10,6 +10,23 @@
   home.username = "sagar";
   home.homeDirectory = "/home/sagar";
 
+  dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/shell" = {
+        disable-user-extensions = false;
+        enabled-extensions = with pkgs.gnomeExtensions; [
+          user-themes.extensionUuid
+          applications-menu.extensionUuid
+          system-monitor.extensionUuid
+          systemd-status.extensionUuid
+          places-status-indicator.extensionUuid
+          status-icons.extensionUuid
+        ];
+      };
+    };
+  };
+
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -22,22 +39,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
     pkgs.unstable.vscode
     pkgs.unstable.google-chrome
     pkgs.slack

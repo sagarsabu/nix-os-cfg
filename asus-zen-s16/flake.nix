@@ -8,6 +8,7 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
   };
 
   outputs =
