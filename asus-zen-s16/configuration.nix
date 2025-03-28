@@ -73,14 +73,28 @@
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
 
-  hardware.graphics = {
-    enable = true;
-    # vulkan
-    extraPackages = [
-      pkgs.amdvlk
-      # To enable Vulkan support for 32-bit applications
-      pkgs.driversi686Linux.amdvlk
-    ];
+  hardware = {
+    enableAllFirmware = true;
+    graphics = {
+      enable = true;
+      extraPackages = [
+        pkgs.rocmPackages.clr.icd
+        pkgs.amdvlk
+        pkgs.libva
+      ];
+      extraPackages32 = [
+        # To enable Vulkan support for 32-bit applications
+        pkgs.driversi686Linux.amdvlk
+      ];
+    };
+    amdgpu = {
+      initrd.enable = true;
+      opencl.enable = true;
+      amdvlk.enable = true;
+      amdvlk.support32Bit.enable = true;
+      amdvlk.supportExperimental.enable = true;
+
+    };
   };
   # Force radv
   environment.variables.AMD_VULKAN_ICD = "RADV";
