@@ -6,3 +6,4 @@ NixOS Configuration
 
 - setup starship prompts
 - more investigation into hyprland composer
+- build toolchains

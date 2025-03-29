@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 {
   inputs,
   config,
@@ -10,68 +6,27 @@
   ...
 }:
 {
-  nixpkgs.config.allowUnfree = true;
   nix.settings = {
     experimental-features = [
       "nix-command"
       "flakes"
     ];
   };
+  nixpkgs.config.allowUnfree = true;
 
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./boot.nix
     ./audio.nix
     ./security.nix
     ./il18.nix
+    ./network.nix
+    ./time.nix
     ./global-programs.nix
-    inputs.home-manager.nixosModules.home-manager
-    inputs.distro-grub-themes.nixosModules.${system}.default
+    ./sys-packages.nix
+    ./users.nix
   ];
-
-  # aka 6.14
-  boot.kernelPackages = pkgs.linuxPackages_testing;
-  boot.kernelParams = [
-    # fix hangs with PSR
-    "amdgpu.dcdebugmask=0x600"
-  ];
-
-  # Bootloader.
-  boot.loader = {
-    systemd-boot.enable = false;
-    efi.canTouchEfiVariables = true;
-    grub = {
-      enable = true;
-      device = "nodev";
-      useOSProber = true;
-      efiSupport = true;
-      fontSize = 20;
-    };
-  };
-
-  distro-grub-themes = {
-    enable = true;
-    theme = "nixos";
-  };
-
-  # Enable networking
-  networking = {
-    hostName = "sagar-zen-s16-laptop";
-    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-    # Configure network proxy if necessary
-    # proxy.default = "http://user:password@proxy:port/";
-    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-    networkmanager = {
-      enable = true;
-      wifi = {
-        powersave = false;
-        backend = "iwd";
-      };
-    };
-  };
-
-  # Set your time zone.
-  time.timeZone = "Pacific/Auckland";
 
   hardware = {
     enableAllFirmware = true;
@@ -96,8 +51,6 @@
 
     };
   };
-  # Force radv
-  environment.variables.AMD_VULKAN_ICD = "RADV";
 
   # enable firmware update daemon
   services.fwupd.enable = true;
@@ -129,57 +82,7 @@
   services.printing.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
-  users.defaultUserShell = pkgs.fish;
-  users.users.sagar = {
-    isNormalUser = true;
-    description = "sagar";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-    ];
-    packages = [
-    ];
-  };
-
-  home-manager = {
-    extraSpecialArgs = { inherit inputs pkgs; };
-    backupFileExtension = "backup";
-    users = {
-      sagar = import ./home.nix;
-    };
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages =
-    with pkgs;
-    [
-      wget
-      curl
-      tree
-      bat
-      nixfmt-rfc-style
-      wezterm
-      pciutils
-      lshw
-      nix-ld
-      mesa
-      vulkan-tools
-      pulseaudioFull
-      pavucontrol
-      docker
-      nvtopPackages.amd
-      home-manager
-      gnome-tweaks
-      gnome-firmware
-      gnome-shell-extensions
-    ]
-    ++ (with pkgs.gnomeExtensions; [
-      systemd-status
-      dock-from-dash
-    ]);
+  services.libinput.enable = true;
 
   # docker
   virtualisation.docker = {
@@ -189,6 +92,10 @@
   };
 
   environment = {
+    variables = {
+      # Force radv
+      AMD_VULKAN_ICD = "RADV";
+    };
     interactiveShellInit = ''
       alias grep='grep --colour=auto'
     '';
@@ -225,12 +132,6 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

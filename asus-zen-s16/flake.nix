@@ -32,18 +32,20 @@
       };
     in
     {
-      nixosConfigurations."sagar-zen-s16-laptop" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs system; };
-        modules = [
-          # Overlays-module makes "pkgs.unstable" available in configuration.nix
-          (
-            { config, pkgs, ... }:
-            {
-              nixpkgs.overlays = [ overlay-unstable ];
-            }
-          )
-          ./configuration.nix
-        ];
+      nixosConfigurations = {
+        "sagar-zen-s16-laptop" = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs system; };
+          modules = [
+            # Overlays-module makes "pkgs.unstable" available in configuration.nix
+            (
+              { config, pkgs, ... }:
+              {
+                nixpkgs.overlays = [ overlay-unstable ];
+              }
+            )
+            ./configuration.nix
+          ];
+        };
       };
     };
 }
