@@ -29,9 +29,16 @@
     ./global-programs.nix
     ./sys-packages.nix
     ./users.nix
+    ./services.nix
+    ./virtualisation.nix
+    ./environment.nix
     inputs.nur.modules.nixos.default
     inputs.nur.legacyPackages.x86_64-linux.repos.wingej0.modules.nordvpn
   ];
+
+  xdg = {
+    portal.enable = true;
+  };
 
   hardware = {
     enableAllFirmware = true;
@@ -54,78 +61,6 @@
       amdvlk.support32Bit.enable = true;
       amdvlk.supportExperimental.enable = true;
     };
-  };
-
-  # enable firmware update daemon
-  services.fwupd.enable = true;
-
-  # Install NordVPN
-  nixpkgs.overlays = [
-    (final: prev: {
-      nordvpn = pkgs.nur.repos.wingej0.nordvpn;
-    })
-  ];
-  services.nordvpn.enable = true;
-
-  # enable display managers.
-  # NOTE: this is not necessarily related to XServer / X11 / Xorg
-  services.xserver = {
-    enable = true;
-    videoDrivers = [ "amdgpu" ];
-    # Option "TearFree" "true"
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm = {
-      enable = true;
-      wayland = true;
-    };
-    desktopManager.gnome = {
-      enable = true;
-    };
-    # Configure keymap in X11
-    xkb = {
-      layout = "nz";
-      variant = "";
-    };
-  };
-
-  services.gnome.games.enable = false;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
-
-  # docker
-  virtualisation.docker = {
-    enable = true;
-    rootless.enable = true;
-    rootless.setSocketVariable = true;
-  };
-
-  environment = {
-    variables = {
-      # Force radv
-      AMD_VULKAN_ICD = "RADV";
-    };
-    interactiveShellInit = ''
-      alias grep='grep --colour=auto'
-    '';
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-      XCURSOR_THEME = "Bibata-Original-Classic";
-    };
-    gnome.excludePackages = (
-      with pkgs;
-      [
-        gnome-console
-      ]
-    );
-    # for better bash completions
-    pathsToLink = [
-      "/share/bash"
-      "/share/fish"
-    ];
   };
 
   # systemd

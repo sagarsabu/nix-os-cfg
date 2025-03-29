@@ -61,6 +61,7 @@
 
       "org/gnome/desktop/applications/terminal" = {
         exec = "wezterm";
+        exec-arg = "start --always-new-process";
       };
     };
   };

@@ -1,9 +1,6 @@
-# nix-os-cfg
-
-NixOS Configuration
+# NixOS Configuration
 
 ## TODOs
 
-- setup starship prompts
-- more investigation into hyprland composer
-- build toolchains
+- setup starship prompts ?
+- scale down cursor a wea bit

@@ -25,7 +25,8 @@
 			"amdgpu",
 			"nixos",
 			"nixpkgs",
-			"pkgs"
+			"pkgs",
+			"virtualisation"
 		]
 	}
 }
