@@ -16,8 +16,13 @@
     };
 
     # Open ports in the firewall.
-    # firewall.allowedTCPPorts = [ ... ];
-    # firewall.allowedUDPPorts = [ ... ];
+    # for nordvpn
+    # https://github.com/nix-community/nur-combined/blob/main/repos/wingej0/README.md
+    wireguard.enable = true;
+    firewall.checkReversePath = false;
+    # firewall.allowedTCPPorts = [ ];
+    # firewall.allowedUDPPorts = [ ];
+
     # Or disable the firewall altogether.
     # firewall.enable = false;
   };

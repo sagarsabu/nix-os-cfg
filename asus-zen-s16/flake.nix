@@ -11,6 +11,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -18,6 +22,7 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
+      nur,
       ...
     }@inputs:
     let
@@ -29,7 +34,13 @@
           inherit system;
           config.allowUnfree = true;
         };
+
+        nur = import nur {
+          nurpkgs = prev;
+          pkgs = prev;
+        };
       };
+
     in
     {
       nixosConfigurations = {

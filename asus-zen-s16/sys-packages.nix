@@ -24,6 +24,14 @@
       gnome-tweaks
       gnome-firmware
       gnome-shell-extensions
+      gnome-secrets
+
+      # build tools
+      gnumake42
+      cmake
+      gcc14
+      rustup
+      cargo-binstall
     ]
     ++ (with pkgs.gnomeExtensions; [
       systemd-status

@@ -12,6 +12,7 @@
       "networkmanager"
       "wheel"
       "docker"
+      "nordvpn"
     ];
     packages = [
     ];

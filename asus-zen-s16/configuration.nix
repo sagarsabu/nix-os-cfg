@@ -26,6 +26,8 @@
     ./global-programs.nix
     ./sys-packages.nix
     ./users.nix
+    inputs.nur.modules.nixos.default
+    inputs.nur.legacyPackages.x86_64-linux.repos.wingej0.modules.nordvpn
   ];
 
   hardware = {
@@ -48,12 +50,19 @@
       amdvlk.enable = true;
       amdvlk.support32Bit.enable = true;
       amdvlk.supportExperimental.enable = true;
-
     };
   };
 
   # enable firmware update daemon
   services.fwupd.enable = true;
+
+  # Install NordVPN
+  nixpkgs.overlays = [
+    (final: prev: {
+      nordvpn = pkgs.nur.repos.wingej0.nordvpn;
+    })
+  ];
+  services.nordvpn.enable = true;
 
   # enable display managers.
   # NOTE: this is not necessarily related to XServer / X11 / Xorg
