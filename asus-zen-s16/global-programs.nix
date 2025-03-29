@@ -5,8 +5,11 @@
   programs.firefox.enable = true;
   programs.xwayland.enable = true;
   programs.nix-ld.enable = true;
-  programs.git.enable = true;
-  programs.git.lfs.enable = true;
+
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+  };
 
   # fish
   programs.fish = {

@@ -54,19 +54,19 @@
     theme = "nixos";
   };
 
-  networking.hostName = "sagar-zen-s16-laptop"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
-  networking.networkmanager = {
-    enable = true;
-    wifi = {
-      powersave = false;
-      backend = "iwd";
+  networking = {
+    hostName = "sagar-zen-s16-laptop";
+    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    # Configure network proxy if necessary
+    # proxy.default = "http://user:password@proxy:port/";
+    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    networkmanager = {
+      enable = true;
+      wifi = {
+        powersave = false;
+        backend = "iwd";
+      };
     };
   };
 
@@ -102,7 +102,8 @@
   # enable firmware update daemon
   services.fwupd.enable = true;
 
-  # Enable the X11 windowing system.
+  # enable display managers.
+  # NOTE: this is not necessarily related to XServer / X11 / Xorg
   services.xserver = {
     enable = true;
     videoDrivers = [ "amdgpu" ];
@@ -206,6 +207,10 @@
   # systemd
   systemd = {
     tpm2.enable = true;
+
+    # first stall on login
+    services."getty@tty1".enable = false;
+    services."autovt@tty1".enable = false;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
