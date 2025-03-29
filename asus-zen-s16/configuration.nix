@@ -14,6 +14,9 @@
   };
   nixpkgs.config.allowUnfree = true;
 
+  # for better shell completions
+  documentation.man.generateCaches = true;
+
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -118,6 +121,11 @@
         gnome-console
       ]
     );
+    # for better bash completions
+    pathsToLink = [
+      "/share/bash"
+      "/share/fish"
+    ];
   };
 
   # systemd

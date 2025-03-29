@@ -40,6 +40,9 @@
     # '';
   };
 
+  # for better shell completions
+  programs.man.generateCaches = true;
+
   dconf = {
     enable = true;
     settings = {
