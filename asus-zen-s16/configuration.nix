@@ -129,8 +129,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.defaultUserShell = pkgs.fish;
   users.users.sagar = {
     isNormalUser = true;
     description = "sagar";
@@ -188,11 +187,20 @@
     rootless.setSocketVariable = true;
   };
 
-  environment.interactiveShellInit = ''
-    alias grep='grep --colour=auto'
-  '';
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
+  environment = {
+    interactiveShellInit = ''
+      alias grep='grep --colour=auto'
+    '';
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      XCURSOR_THEME = "Bibata-Original-Classic";
+    };
+    gnome.excludePackages = (
+      with pkgs;
+      [
+        gnome-console
+      ]
+    );
   };
 
   # systemd

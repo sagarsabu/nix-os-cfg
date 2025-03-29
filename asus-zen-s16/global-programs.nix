@@ -8,6 +8,14 @@
   programs.git.enable = true;
   programs.git.lfs.enable = true;
 
+  # fish
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      set fish_greeting # Disable greeting
+    '';
+  };
+
   # htop
   programs.htop = {
     enable = true;

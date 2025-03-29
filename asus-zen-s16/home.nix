@@ -55,6 +55,10 @@
           "dash-to-dock@micxgx.gmail.com"
         ];
       };
+
+      "org/gnome/desktop/applications/terminal" = {
+        exec = "wezterm";
+      };
     };
   };
 

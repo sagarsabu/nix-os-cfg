@@ -4,4 +4,5 @@ NixOS Configuration
 
 ## TODOs
 
-- Fix cursor disappearing in terminals when typing
+- setup starship prompts
+- more investigation into hyprland composer
