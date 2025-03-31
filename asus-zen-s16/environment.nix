@@ -5,9 +5,10 @@
       # Force radv
       AMD_VULKAN_ICD = "RADV";
     };
-    interactiveShellInit = ''
-      alias grep='grep --colour=auto'
-    '';
+    shellAliases = {
+      ll = "ls -al";
+      grep = "grep --colour=auto";
+    };
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
       XCURSOR_THEME = "Bibata-Original-Classic";

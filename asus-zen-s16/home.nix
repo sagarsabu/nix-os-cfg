@@ -32,6 +32,7 @@
   home.file = {
     ".gitconfig".source = ../dotfiles/.gitconfig;
     ".wezterm.lua".source = ../dotfiles/.wezterm.lua;
+    ".work_bash_aliases.fish".source = ../dotfiles/.work_bash_aliases.fish;
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''

@@ -15,7 +15,10 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-      set fish_greeting # Disable greeting
+      # Disable greeting
+      set fish_greeting
+      # enable work bash aliases
+      source /home/sagar/.work_bash_aliases.fish
     '';
   };
 
@@ -33,6 +36,8 @@
     defaultEditor = true;
     vimAlias = true;
   };
+
+  programs.openvpn3.enable = true;
 
   programs.steam = {
     enable = true;

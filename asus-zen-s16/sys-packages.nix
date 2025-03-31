@@ -26,6 +26,9 @@
       gnome-shell-extensions
       gnome-secrets
 
+      # openvpn
+      lz4
+
       # build tools
       gnumake42
       cmake
