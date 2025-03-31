@@ -5,17 +5,26 @@
   ];
 
   users.defaultUserShell = pkgs.fish;
-  users.users.sagar = {
-    isNormalUser = true;
-    description = "sagar";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-      "nordvpn"
-    ];
-    packages = [
-    ];
+  users.users = {
+    sagar = {
+      isNormalUser = true;
+      group = "sagar";
+      description = "The local user";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "docker"
+        "nordvpn"
+      ];
+      packages = [
+      ];
+    };
+
+  };
+  users.groups = {
+    sagar = {
+      name = "sagar";
+    };
   };
 
   home-manager = {
