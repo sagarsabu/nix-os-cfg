@@ -2,6 +2,15 @@
 
 set -gx _WORKSPACE "$HOME/tworkspace"
 
+function get-group-id
+    if test (count $argv) -eq 0
+        echo "Group name not specified ..."
+        return 1
+    end
+
+    getent group $argv[1] | awk -F: '{print $3}'
+end
+
 function build-p25-docker-c7
     set -l _uid (uuidgen -t)
     set -l _container_name "p25-builder-c7-"(string sub -l 8 $_uid)
@@ -52,6 +61,7 @@ function build-p25-docker-u22
     set -l _npm_dir "$HOME/.npm"
     set -l _docker_dir "$HOME/.docker"
     set -l _container_hostname u22-builder
+    set -l _docker_grp_id (getent group docker | awk -F: '{print $3}')
 
     docker pull $_docker_image
 
@@ -62,7 +72,7 @@ function build-p25-docker-u22
         --device /dev/tpm0:/dev/tpm0 \
         --device /dev/tpmrm0:/dev/tpmrm0 \
         --group-add (id -g tss) \
-        --group-add (id -g docker) \
+        --group-add $_docker_grp_id \
         --workdir $_work_dir \
         --hostname $_container_hostname \
         -v $_grp_vol \
