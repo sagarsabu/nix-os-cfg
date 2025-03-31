@@ -9,7 +9,7 @@
     sagar = {
       isNormalUser = true;
       group = "sagar";
-      description = "The local user";
+      description = "Sagar";
       extraGroups = [
         "networkmanager"
         "wheel"

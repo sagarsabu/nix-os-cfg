@@ -5,5 +5,5 @@
     enable = true;
     rootless.enable = false;
   };
-  virtualisation.containerd.enable = true;
+  # virtualisation.containerd.enable = true;
 }

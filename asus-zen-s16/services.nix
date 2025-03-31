@@ -13,7 +13,7 @@
 
   services.nordvpn.enable = true;
 
-  services.resolved.enable = true;
+  # services.resolved.enable = true;
 
   # enable display managers.
   # NOTE: this is not necessarily related to XServer / X11 / Xorg

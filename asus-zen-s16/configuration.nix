@@ -65,7 +65,7 @@
 
   # systemd
   systemd = {
-    tpm2.enable = true;
+    # tpm2.enable = true;
 
     # first stall on login
     services."getty@tty1".enable = false;
