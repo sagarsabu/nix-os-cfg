@@ -16,7 +16,11 @@
         "docker"
         "nordvpn"
       ];
-      packages = [
+      packages = with pkgs; [
+        # themes and icons
+        sweet
+        candy-icons
+        bibata-cursors
       ];
     };
 

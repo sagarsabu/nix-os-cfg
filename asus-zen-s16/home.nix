@@ -17,10 +17,6 @@
     unstable.google-chrome
     slack
     nil
-    # themes and icons
-    sweet
-    candy-icons
-    bibata-cursors
   ];
 
   gtk = {
