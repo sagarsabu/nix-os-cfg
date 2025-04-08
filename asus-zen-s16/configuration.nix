@@ -56,10 +56,10 @@
     };
     amdgpu = {
       initrd.enable = true;
-      opencl.enable = true;
+      opencl.enable = false;
       amdvlk.enable = true;
       amdvlk.support32Bit.enable = true;
-      amdvlk.supportExperimental.enable = true;
+      amdvlk.supportExperimental.enable = false;
     };
   };
 
