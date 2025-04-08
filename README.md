@@ -2,6 +2,7 @@
 
 ## TODOs
 
+- fix stupidly huge cursor size in chrome
 - setup tiling window manager
 - setup starship prompts ?
 - scale down cursor a wea bit

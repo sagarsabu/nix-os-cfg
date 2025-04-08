@@ -38,6 +38,8 @@
 
   xdg = {
     portal.enable = true;
+    portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    portal.config.common.default = "gtk";
   };
 
   hardware = {
@@ -56,7 +58,7 @@
     };
     amdgpu = {
       initrd.enable = true;
-      opencl.enable = false;
+      opencl.enable = true;
       amdvlk.enable = true;
       amdvlk.support32Bit.enable = true;
       amdvlk.supportExperimental.enable = false;
