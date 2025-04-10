@@ -30,9 +30,11 @@
       lz4
 
       # build tools
+      gcc14
+      gdb
       gnumake42
       cmake
-      gcc14
+      llvmPackages_19.clang-tools
       rustup
       cargo-binstall
     ]
