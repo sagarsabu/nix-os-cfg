@@ -34,9 +34,13 @@
       gdb
       gnumake42
       cmake
+      cmake-format
+      cppcheck
       llvmPackages_19.clang-tools
       rustup
       cargo-binstall
+
+      # libraries
     ]
     ++ (with pkgs.gnomeExtensions; [
       systemd-status
