@@ -25,8 +25,9 @@
       gnome-firmware
       gnome-shell-extensions
       gnome-secrets
+      vlc
 
-      # openvpn
+      # for openvpn
       lz4
 
       # build tools
@@ -39,6 +40,10 @@
       llvmPackages_19.clang-tools
       rustup
       cargo-binstall
+
+      # languages
+      dotnetCorePackages.dotnet_9.sdk
+      python313Full
 
       # libraries
     ]
