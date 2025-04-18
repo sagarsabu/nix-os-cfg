@@ -26,6 +26,7 @@
       gnome-shell-extensions
       gnome-secrets
       vlc
+      transmission_4-qt
 
       # for openvpn
       lz4
