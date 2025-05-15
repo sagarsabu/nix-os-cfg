@@ -27,6 +27,7 @@
       gnome-secrets
       vlc
       transmission_4-qt
+      htop
 
       # for openvpn
       lz4
@@ -45,6 +46,7 @@
       # languages
       dotnetCorePackages.dotnet_9.sdk
       python313Full
+      nodejs_20
 
       # libraries
     ]

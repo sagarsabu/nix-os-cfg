@@ -22,14 +22,6 @@
     '';
   };
 
-  # htop
-  programs.htop = {
-    enable = true;
-    settings = {
-      hide_kernel_threads = true;
-    };
-  };
-
   # neovim
   programs.neovim = {
     enable = true;
