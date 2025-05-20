@@ -5,6 +5,8 @@
   environment.systemPackages =
     with pkgs;
     [
+      man-pages
+      man-pages-posix
       wget
       curl
       tree

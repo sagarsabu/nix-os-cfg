@@ -14,8 +14,11 @@
   };
   nixpkgs.config.allowUnfree = true;
 
-  # for better shell completions
-  documentation.man.generateCaches = true;
+  documentation = {
+    dev.enable = true;
+    # for better shell completions
+    man.generateCaches = true;
+  };
 
   imports = [
     # Include the results of the hardware scan.

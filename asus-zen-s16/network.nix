@@ -19,11 +19,13 @@
     # for nordvpn
     # https://github.com/nix-community/nur-combined/blob/main/repos/wingej0/README.md
     wireguard.enable = true;
-    firewall.checkReversePath = false;
-    # firewall.allowedTCPPorts = [ ];
-    # firewall.allowedUDPPorts = [ ];
 
     # Or disable the firewall altogether.
-    # firewall.enable = false;
+    firewall = {
+      enable = true;
+      checkReversePath = false;
+      allowedTCPPorts = [ 3000 ];
+      allowedUDPPorts = [ ];
+    };
   };
 }
