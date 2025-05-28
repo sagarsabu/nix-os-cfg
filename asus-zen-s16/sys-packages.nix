@@ -30,6 +30,9 @@
       vlc
       transmission_4-qt
       htop
+      zed-editor
+      brave
+      nixd
 
       # for openvpn
       lz4
