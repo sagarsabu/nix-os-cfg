@@ -33,6 +33,8 @@
       zed-editor
       brave
       nixd
+      libreoffice-qt6-fresh
+      file
 
       # for openvpn
       lz4
