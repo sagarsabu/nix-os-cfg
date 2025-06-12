@@ -12,7 +12,7 @@
     # enable firmware update daemon
     fwupd.enable = true;
     nordvpn.enable = true;
-    # resolved.enable = true;
+    resolved.enable = true;
 
     # enable display managers.
     # NOTE: this is not necessarily related to XServer / X11 / Xorg
