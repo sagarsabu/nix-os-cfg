@@ -31,10 +31,14 @@
       transmission_4-qt
       htop
       zed-editor
-      brave
       nixd
       libreoffice-qt6-fresh
       file
+
+      # browsers
+      brave
+      # https://github.com/nix-community/nur-combined/blob/main/repos/nanamiiiii/pkgs/microsoft-edge/default.nix
+      nur.repos.nanamiiiii.microsoft-edge
 
       # for openvpn
       lz4
