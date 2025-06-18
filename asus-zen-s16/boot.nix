@@ -9,8 +9,8 @@
     inputs.distro-grub-themes.nixosModules.${system}.default
   ];
 
-  # aka 6.14
-  boot.kernelPackages = pkgs.linuxPackages_testing;
+  # aka 6.15.2
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     # fix hangs with PSR
     "amdgpu.dcdebugmask=0x600"

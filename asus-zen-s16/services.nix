@@ -27,10 +27,10 @@
     };
     # Option "TearFree" "true"
     # Enable the GNOME Desktop Environment.
-    desktopManager.gnome = {
+    xserver.desktopManager.gnome = {
       enable = true;
     };
-    displayManager = {
+    xserver.displayManager = {
       gdm = {
         enable = true;
         wayland = true;
