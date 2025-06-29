@@ -38,7 +38,8 @@
       # browsers
       brave
       # https://github.com/nix-community/nur-combined/blob/main/repos/nanamiiiii/pkgs/microsoft-edge/default.nix
-      nur.repos.nanamiiiii.microsoft-edge
+      # nur.repos.nanamiiiii.microsoft-edge
+      microsoft-edge
 
       # for openvpn
       lz4

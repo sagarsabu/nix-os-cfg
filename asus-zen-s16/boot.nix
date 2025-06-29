@@ -16,16 +16,22 @@
     "amdgpu.dcdebugmask=0x600"
   ];
 
-  # Bootloader.
-  boot.loader = {
-    systemd-boot.enable = false;
-    efi.canTouchEfiVariables = true;
-    grub = {
-      enable = true;
-      device = "nodev";
-      useOSProber = true;
-      efiSupport = true;
-      fontSize = 20;
+  boot = {
+    tmp = {
+      useTmpfs = true;
+      tmpfsSize = "100%";
+    };
+    # Bootloader.
+    loader = {
+      systemd-boot.enable = false;
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        device = "nodev";
+        useOSProber = true;
+        efiSupport = true;
+        fontSize = 20;
+      };
     };
   };
 

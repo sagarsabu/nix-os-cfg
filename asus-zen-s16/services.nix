@@ -1,13 +1,5 @@
 { pkgs, ... }:
 {
-
-  # for NordVPN
-  nixpkgs.overlays = [
-    (final: prev: {
-      nordvpn = pkgs.nur.repos.wingej0.nordvpn;
-    })
-  ];
-
   services = {
     # enable firmware update daemon
     fwupd.enable = true;
@@ -47,4 +39,10 @@
     libinput.enable = true;
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      # for NordVPN
+      nordvpn = pkgs.nur.repos.wingej0.nordvpn;
+    })
+  ];
 }
