@@ -34,6 +34,8 @@
       nixd
       libreoffice-qt6-fresh
       file
+      jellyfin-media-player
+      wireshark
 
       # browsers
       brave
@@ -66,4 +68,10 @@
       systemd-status
       dock-from-dash
     ]);
+
+  qt = {
+    enable = true;
+    style = "adwaita-dark";
+    platformTheme = "gnome";
+  };
 }

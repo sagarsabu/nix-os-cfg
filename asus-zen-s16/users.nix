@@ -15,6 +15,7 @@
         "wheel"
         "docker"
         "nordvpn"
+        "wireshark"
       ];
       packages = with pkgs; [
         # themes and icons
