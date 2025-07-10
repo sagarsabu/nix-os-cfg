@@ -36,6 +36,7 @@
       file
       jellyfin-media-player
       wireshark
+      psmisc
 
       # browsers
       brave
