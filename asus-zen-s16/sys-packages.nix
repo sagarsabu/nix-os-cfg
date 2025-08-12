@@ -37,6 +37,8 @@
       jellyfin-media-player
       wireshark
       psmisc
+      openssl
+      pkg-config
 
       # browsers
       brave

@@ -13,7 +13,7 @@ end
 function build-p25-docker-u22
     set -l _uid (uuidgen -t)
     set -l _container_name "p25-builder-u22-"(string sub -l 8 $_uid)
-    set -l _docker_image gitlab.taitradio.net:4567/core-network/tn9400/p25core/p25-builder-ubuntu22-04:03-34
+    set -l _docker_image gitlab.taitradio.net:4567/core-network/tn9400/p25core/p25-builder-ubuntu22-04:03-36
     set -l _docker_socket_vol /var/run/docker.sock:/var/run/docker.sock
     set -l _grp_vol /etc/group:/etc/group:ro
     set -l _pwd_vol /etc/passwd:/etc/passwd:ro
@@ -28,7 +28,7 @@ function build-p25-docker-u22
     ensure-dir-exists "$HOME/.npm"
     ensure-dir-exists "$HOME/.docker"
 
-    # docker pull $_docker_image
+    docker pull $_docker_image
 
     docker run \
         --rm -it \
