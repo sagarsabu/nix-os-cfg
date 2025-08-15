@@ -39,6 +39,7 @@
       psmisc
       openssl
       pkg-config
+      autoconf
 
       # browsers
       brave
